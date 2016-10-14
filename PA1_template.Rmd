@@ -75,7 +75,7 @@ ImputedData =  ImputedData %>%
         summarise(total = sum(steps))
 
 ggplot(ImputedData, aes(x=date, y=total)) + 
-        geom_bar(stat="identity", color="deepskyblue4", fill="deepskyblue")
+        geom_bar(stat="identity", color="deepskyblue4", fill="deepskyblue") +
         labs(x="Date", y="Total Steps", title="Total Steps per Day with Imputed Data")
 
 ggsave("figures/TotalStepsPerDayWithImputedData.png")

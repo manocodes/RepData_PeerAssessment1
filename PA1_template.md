@@ -1,6 +1,6 @@
 # Reproducible Research: Peer Assessment 1
 Mano Yakandawala  
-#### Report created on : Thu Oct 13 2016
+#### Report created on : Fri Oct 14 2016
 
 
 
@@ -133,28 +133,11 @@ ImputedData =  ImputedData %>%
         summarise(total = sum(steps))
 
 ggplot(ImputedData, aes(x=date, y=total)) + 
-        geom_bar(stat="identity", color="deepskyblue4", fill="deepskyblue")
-```
-
-![](PA1_template_files/figure-html/MissingValues-1.png)<!-- -->
-
-```r
+        geom_bar(stat="identity", color="deepskyblue4", fill="deepskyblue") +
         labs(x="Date", y="Total Steps", title="Total Steps per Day with Imputed Data")
 ```
 
-```
-## $x
-## [1] "Date"
-## 
-## $y
-## [1] "Total Steps"
-## 
-## $title
-## [1] "Total Steps per Day with Imputed Data"
-## 
-## attr(,"class")
-## [1] "labels"
-```
+![](PA1_template_files/figure-html/MissingValues-1.png)<!-- -->
 
 ```r
 ggsave("figures/TotalStepsPerDayWithImputedData.png")
