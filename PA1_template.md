@@ -5,20 +5,21 @@ Mano Yakandawala
 
 
 ## Loading and preprocessing the data
+Read the dataset without removing NA values.
 
 ```r
-#Read the data.
 alldata = read.csv("activity.csv")
-#we want to group the data by date and the summarise by date to get the count
-ProData =  alldata %>% group_by(date) %>%
-        summarise(total = sum(steps))
 ```
 
 ## What is mean total number of steps taken per day?
+Here we group the data by date and the summarise by date to get the count per date.  
 
 ```r
+ProData =  alldata %>% group_by(date) %>%
+        summarise(total = sum(steps))
+
 ggplot(ProData, aes(x=date, y=total)) + 
-        geom_bar(stat="identity", color="black", fill="wheat") + 
+        geom_bar(stat="identity", color="deepskyblue4", fill="deepskyblue") + 
         labs(x="Date", y="Total Steps", title="Total Steps per Day")
 ```
 
@@ -78,7 +79,7 @@ AvgDailyData =  na.omit(alldata %>% group_by(interval))  %>%
         summarise(averageSteps = mean(steps))
 
 ggplot(AvgDailyData, aes(x=interval, y=averageSteps)) + 
-        geom_line() + 
+        geom_line(size=.8, color="deepskyblue4") + 
         labs(x="Time Interval", y="Average Steps", title="Average Steps per Time Interval of 5 mins")
 ```
 
@@ -104,6 +105,9 @@ AvgDailyData[which.max(AvgDailyData$averageSteps),]
 ```
 
 ## Imputing missing values
+Here we do a few things. first we get the missing values through a logic index.  
+
+Then we impliment a strategy to fill the NA values by interval. We go through each record, and fill the interval mean if we have an NA for that observation.
 
 ```r
 #total number of missing values..
@@ -115,27 +119,42 @@ nrow(alldata[!complete.cases(alldata),])
 ```
 
 ```r
-#strategy - fill the interval mean if data is missing for an interval
-MissingData =  alldata %>% group_by(interval) %>%
+#strategy implemented.
+ImputedData =  alldata %>% group_by(interval) %>%
         mutate(steps = ifelse(is.na(steps), mean(steps, na.rm = TRUE), steps))
 
-#this dataset will be used later
-CompleteSet = MissingData 
+#this dataset will be used later, so we dont have to missing values again.
+#why, because we have to summarize the dataset which impacts the strucutre..
+CompleteSet = ImputedData 
 
-MissingData =  MissingData %>% 
+ImputedData =  ImputedData %>% 
         ungroup() %>%
         group_by(date) %>%
         summarise(total = sum(steps))
+
+ggplot(ImputedData, aes(x=date, y=total)) + 
+        geom_bar(stat="identity", color="deepskyblue4", fill="deepskyblue")
 ```
 
+![](PA1_template_files/figure-html/MissingValues-1.png)<!-- -->
 
 ```r
-ggplot(MissingData, aes(x=date, y=total)) + 
-        geom_bar(stat="identity", color="black", fill="wheat") + 
         labs(x="Date", y="Total Steps", title="Total Steps per Day with Imputed Data")
 ```
 
-![](PA1_template_files/figure-html/ImputeData-1.png)<!-- -->
+```
+## $x
+## [1] "Date"
+## 
+## $y
+## [1] "Total Steps"
+## 
+## $title
+## [1] "Total Steps per Day with Imputed Data"
+## 
+## attr(,"class")
+## [1] "labels"
+```
 
 ```r
 ggsave("figures/TotalStepsPerDayWithImputedData.png")
@@ -146,7 +165,7 @@ ggsave("figures/TotalStepsPerDayWithImputedData.png")
 ```
 
 ```r
-summary(MissingData)
+summary(ImputedData) #Summary with Imputed data
 ```
 
 ```
@@ -161,7 +180,7 @@ summary(MissingData)
 ```
 
 ```r
-mean(MissingData$total, na.rm = TRUE) #Mean Steps Taken.
+mean(ImputedData$total, na.rm = TRUE) #Mean Steps Taken for imputed data.
 ```
 
 ```
@@ -169,7 +188,7 @@ mean(MissingData$total, na.rm = TRUE) #Mean Steps Taken.
 ```
 
 ```r
-median(MissingData$total, na.rm = TRUE) #Median Steps Taken.
+median(ImputedData$total, na.rm = TRUE) #Median Steps Taken for imputed data.
 ```
 
 ```
@@ -187,7 +206,7 @@ WeekData =  CompleteSet %>%
         summarise(averageSteps = mean(steps))
 
 ggplot(WeekData, aes(x=interval, y=averageSteps, fill=day)) + 
-        geom_line() + 
+        geom_line(size=.8, color="deepskyblue4") + 
         facet_grid(day ~ .) + 
         labs(x="Time Interval", y="Average Steps", title="Average Steps per Time Interval of 5 mins")
 ```
@@ -201,5 +220,3 @@ ggsave("figures/TotalStepsByIntervalandWeekdays.png")
 ```
 ## Saving 7 x 5 in image
 ```
-
-#https://github.com/sefakilic/coursera-repdata/blob/master/project1/PA1_template.Rmd
