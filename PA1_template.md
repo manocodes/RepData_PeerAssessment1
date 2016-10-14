@@ -29,6 +29,18 @@ ggplot(ProData, aes(x=date, y=total)) +
 ![](PA1_template_files/figure-html/MeanTotal-1.png)<!-- -->
 
 ```r
+ggsave("figures/TotalStepsPerDay.png")
+```
+
+```
+## Saving 7 x 5 in image
+```
+
+```
+## Warning: Removed 8 rows containing missing values (position_stack).
+```
+
+```r
 summary(ProData)
 ```
 
@@ -71,6 +83,14 @@ ggplot(AvgDailyData, aes(x=interval, y=averageSteps)) +
 ```
 
 ![](PA1_template_files/figure-html/MeanTotal2-1.png)<!-- -->
+
+```r
+ggsave("figures/AverageStepsPerTimeInterval.png")
+```
+
+```
+## Saving 7 x 5 in image
+```
 
 ```r
 AvgDailyData[which.max(AvgDailyData$averageSteps),]
@@ -116,6 +136,14 @@ ggplot(MissingData, aes(x=date, y=total)) +
 ```
 
 ![](PA1_template_files/figure-html/ImputeData-1.png)<!-- -->
+
+```r
+ggsave("figures/TotalStepsPerDayWithImputedData.png")
+```
+
+```
+## Saving 7 x 5 in image
+```
 
 ```r
 summary(MissingData)
@@ -165,5 +193,13 @@ ggplot(WeekData, aes(x=interval, y=averageSteps, fill=day)) +
 ```
 
 ![](PA1_template_files/figure-html/Weekdata-1.png)<!-- -->
+
+```r
+ggsave("figures/TotalStepsByIntervalandWeekdays.png")
+```
+
+```
+## Saving 7 x 5 in image
+```
 
 #https://github.com/sefakilic/coursera-repdata/blob/master/project1/PA1_template.Rmd

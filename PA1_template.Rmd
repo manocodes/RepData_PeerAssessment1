@@ -30,6 +30,8 @@ ggplot(ProData, aes(x=date, y=total)) +
         geom_bar(stat="identity", color="black", fill="wheat") + 
         labs(x="Date", y="Total Steps", title="Total Steps per Day")
 
+ggsave("figures/TotalStepsPerDay.png")
+
 summary(ProData)
 
 mean(ProData$total, na.rm = TRUE) #Mean Steps Taken.
@@ -44,6 +46,8 @@ AvgDailyData =  na.omit(alldata %>% group_by(interval))  %>%
 ggplot(AvgDailyData, aes(x=interval, y=averageSteps)) + 
         geom_line() + 
         labs(x="Time Interval", y="Average Steps", title="Average Steps per Time Interval of 5 mins")
+
+ggsave("figures/AverageStepsPerTimeInterval.png")
 
 AvgDailyData[which.max(AvgDailyData$averageSteps),]
 ```
@@ -72,6 +76,8 @@ ggplot(MissingData, aes(x=date, y=total)) +
         geom_bar(stat="identity", color="black", fill="wheat") + 
         labs(x="Date", y="Total Steps", title="Total Steps per Day with Imputed Data")
 
+ggsave("figures/TotalStepsPerDayWithImputedData.png")
+
 summary(MissingData)
 
 mean(MissingData$total, na.rm = TRUE) #Mean Steps Taken.
@@ -92,6 +98,7 @@ ggplot(WeekData, aes(x=interval, y=averageSteps, fill=day)) +
         facet_grid(day ~ .) + 
         labs(x="Time Interval", y="Average Steps", title="Average Steps per Time Interval of 5 mins")
 
+ggsave("figures/TotalStepsByIntervalandWeekdays.png")
 ```
 
 #https://github.com/sefakilic/coursera-repdata/blob/master/project1/PA1_template.Rmd
