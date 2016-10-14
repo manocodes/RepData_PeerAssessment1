@@ -1,14 +1,30 @@
 ---
 title: "Reproducible Research: Peer Assessment 1"
+author: "Mano Yakandawala"
 output: 
   html_document:
     keep_md: true
 ---
+#### Report created on : `r format(Sys.time(), "%a %b %d %Y")`
 
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+```
 
 ## Loading and preprocessing the data
+```{r LoadData}
+#Read the data and omit NAs.
+data = read.csv("activity.csv")
 
+#we want to group the data by date and the summarise by date to get the count
+ProData =  na.omit(data %>% group_by(date) %>%
+        summarise(sum(steps)))
 
+head(ProData)
+```
 
 ## What is mean total number of steps taken per day?
 
